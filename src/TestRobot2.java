@@ -42,7 +42,7 @@ public class TestRobot2
       DifferentialDriveRequest dr = new DifferentialDriveRequest();
 
       // set up the request to move in a circle
-      dr.setAngularSpeed(Math.PI * 0.25);
+      dr.setAngularSpeed(0);
       dr.setLinearSpeed(1.0);
 
       System.out.println("Start to move robot");
