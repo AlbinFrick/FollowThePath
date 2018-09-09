@@ -34,19 +34,23 @@ public class FollowPathRobot2 {
         DifferentialDriveRequest dr = new DifferentialDriveRequest();
 
 
-
-        for(int i =0; i < pathSize; i = i+5){
+        System.out.println(pathSize);
+        for(int i =0; i < pathSize; i++){
             robotcomm.getResponse(lr);
 
             Position robotsPosition = new Position(lr.getPosition()[0], lr.getPosition()[1]);
             if (robotsPosition.getDistanceTo(path[i])< 0.3) {
                 System.out.println("distance " +robotsPosition.getDistanceTo(path[i]));
-                rotateRobot(i, robotsPosition, dr, lr, path);
-            }
-           else {
-                dr.setAngularSpeed(0);
-                dr.setLinearSpeed(0.5);
-                robotcomm.putRequest(dr);
+                if(Math.abs(lr.getHeadingAngle() - robotsPosition.getBearingTo(path[1])) > 0.2){
+                    dr.setLinearSpeed(0);
+                    robotcomm.putRequest(dr);
+                    rotateRobot(i, robotsPosition, dr, lr, path);
+                }
+                else{
+                    dr.setLinearSpeed(0.3);
+                    dr.setAngularSpeed(0);
+                    robotcomm.putRequest(dr);
+                }
             }
 
 
@@ -58,46 +62,55 @@ public class FollowPathRobot2 {
         double bearingPoint = robotsPosition.getBearingTo(path[i]);
         System.out.println(lr.getHeadingAngle()- bearingPoint);
 
-        if (lr.getHeadingAngle()-bearingPoint > 0){
-            while(lr.getHeadingAngle()- bearingPoint >0.2){
-                dr.setAngularSpeed(-0.3);
-                dr.setLinearSpeed(0);
-                robotcomm.putRequest(dr);
-                robotcomm.getResponse(lr);
-            }
+        /*if (lr.getHeadingAngle()-bearingPoint > 0){
+            TurnRight(lr,dr,bearingPoint);
 
         }
         else {
-            while(bearingPoint - lr.getHeadingAngle() >0.2){
-                dr.setAngularSpeed(0.3);
-                dr.setLinearSpeed(0);
-                robotcomm.putRequest(dr);
-                robotcomm.getResponse(lr);
-            }
-        }
+            TurnLeft(lr,dr,bearingPoint);
+        }*/
 
-         /*if (bearingPoint + Math.PI> lr.getHeadingAngle() + Math.PI){
+        if (bearingPoint + Math.PI> lr.getHeadingAngle() + Math.PI){
             if (lr.getHeadingAngle()-bearingPoint < Math.PI) {
-                dr.setAngularSpeed(0.3);
-                robotcomm.putRequest(dr);
+                TurnLeft(lr,dr,bearingPoint);
             }
             else{
-                dr.setAngularSpeed(-0.3);
-                robotcomm.putRequest(dr);
+                TurnRight(lr,dr,bearingPoint);
             }
         }
         else if(bearingPoint - lr.getHeadingAngle() < Math.PI){
             if(bearingPoint - lr.getHeadingAngle() < Math.PI){
-                dr.setAngularSpeed(-0.3);
-                robotcomm.putRequest(dr);
+                TurnRight(lr,dr,bearingPoint);
             }
             else{
-                dr.setAngularSpeed(0.3);
-                robotcomm.putRequest(dr);
+                TurnLeft(lr,dr,bearingPoint);
             }
-        }*/
+        }
 
 
     }
+
+    public void TurnRight(LocalizationResponse lr, DifferentialDriveRequest dr, double bearingPoint)throws Exception{
+        while (lr.getHeadingAngle()- bearingPoint >0.2){
+            dr.setAngularSpeed(-0.3);
+            robotcomm.putRequest(dr);
+            robotcomm.getResponse(lr);
+        }
+        dr.setAngularSpeed(0);
+        dr.setLinearSpeed(0.3);
+        robotcomm.putRequest(dr);
+    }
+
+    public void TurnLeft(LocalizationResponse lr, DifferentialDriveRequest dr, double bearingPoint)throws Exception{
+        while (bearingPoint - lr.getHeadingAngle() >0.2){
+            dr.setAngularSpeed(0.3);
+            robotcomm.putRequest(dr);
+            robotcomm.getResponse(lr);
+        }
+        dr.setAngularSpeed(0);
+        dr.setLinearSpeed(0.3);
+        robotcomm.putRequest(dr);
+    }
+
 
 }
