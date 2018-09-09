@@ -45,7 +45,7 @@ public class ReadPath
          double z = (Double)aPosition.get("X");
          path[index] = new Position(x, z);
          index++;
-         System.out.println("x = " + x + ", z = " + z+5);
+         System.out.println("x = " + x + ", z = " + (z+5));
          //System.out.println(index);
       }
       

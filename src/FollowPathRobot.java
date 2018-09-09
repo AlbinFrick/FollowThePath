@@ -92,17 +92,20 @@ public class FollowPathRobot {
         double angleToPoint = roboPos.getBearingTo(testpos);
         System.out.println(pos[0]);
 
-        while(angleToPoint > lr.getHeadingAngle()){
-            robotcomm.putRequest(dr);
-            dr.setAngularSpeed(0.3);
+        while(angleToPoint - lr.getHeadingAngle() <0.2){
+
+            dr.setAngularSpeed(-0.3);
             dr.setLinearSpeed(0);
+            robotcomm.putRequest(dr);
+
 
             //Thread.sleep(1000);
             robotcomm.getResponse(lr);
             roboPos =  new Position(lr.getPosition()[0], lr.getPosition()[1]);
             angleToPoint = roboPos.getBearingTo(testpos);
-            System.out.println(lr.getPosition()[0] + " " + lr.getPosition()[1]);
-            System.out.println(lr.getHeadingAngle());
+           // System.out.println(lr.getPosition()[0] + " " + lr.getPosition()[1]);
+            System.out.println("headingAngle" + lr.getHeadingAngle());
+            System.out.println("angleToPoint" + angleToPoint);
 
         }
         dr.setAngularSpeed(0);
