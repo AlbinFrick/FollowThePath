@@ -30,7 +30,7 @@ public class FollowPathRobot3 {
         long startTime = System.nanoTime();
         for (int i = 0; i < pathSize; i++) {
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
-            if(Math.abs(robotPos.getDistanceTo(path[i])) > 0.3){
+            if(Math.abs(robotPos.getDistanceTo(path[i])) > 0.8){
                 System.out.println("Vi är på steg: " + i + " av " + pathSize);
                 rotateRobot(path[i]);
                 driveRobot(path[i]);
@@ -47,9 +47,29 @@ public class FollowPathRobot3 {
     private void rotateRobot(Position rotateToPoint) throws Exception {
         robotcomm.getResponse(lr);
         bearingPoint = robotPos.getBearingTo(rotateToPoint);
-        double angleprecision = 0.3;
-        double turnspeed = 1.5;
+        //double angleprecision = 0.3;
+        //double turnspeed = 1.5;
         if (lr.getHeadingAngle() > bearingPoint){
+            if((lr.getHeadingAngle()-Math.PI) > bearingPoint){
+                Turn(false);
+            }
+            else {
+                Turn(true);
+            }
+            dr.setAngularSpeed(0);
+            robotcomm.putRequest(dr);
+        }
+        else {
+            if((lr.getHeadingAngle()+Math.PI) < bearingPoint){
+                Turn(true);
+            }
+            else{
+                Turn(false);
+            }
+            dr.setAngularSpeed(0);
+            robotcomm.putRequest(dr);
+        }
+       /* if (lr.getHeadingAngle() > bearingPoint){
             if((lr.getHeadingAngle()-Math.PI) > bearingPoint){
                 while (Math.abs(lr.getHeadingAngle()-bearingPoint) > angleprecision){
                     dr.setAngularSpeed(turnspeed);
@@ -84,7 +104,7 @@ public class FollowPathRobot3 {
             }
             dr.setAngularSpeed(0);
             robotcomm.putRequest(dr);
-        }
+        }*/
     }
 
     /**
@@ -98,13 +118,12 @@ public class FollowPathRobot3 {
         double angleprecision = 0.23;
         if (turn){
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
-                dr.setAngularSpeed(turnspeed);
+                dr.setAngularSpeed(-turnspeed);
                 robotcomm.putRequest(dr);
                 robotcomm.getResponse(lr);
             }
         }
         else{
-            turnspeed = -1;
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
                 dr.setAngularSpeed(turnspeed);
                 robotcomm.putRequest(dr);
@@ -116,9 +135,8 @@ public class FollowPathRobot3 {
 
     private void driveRobot(Position driveToPoint) throws Exception{
         robotcomm.getResponse(lr);
-        //byt till bättre namn här!!!! sen!
-        double lookAheadDistance = 0.3;
-        double robotSpeed = 0.93;
+        double lookAheadDistance = 1;
+        double robotSpeed = 2.2;
         while (Math.abs(robotPos.getDistanceTo(driveToPoint)) > lookAheadDistance){
             dr.setLinearSpeed(robotSpeed);
             robotcomm.putRequest(dr);

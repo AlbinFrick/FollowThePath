@@ -17,7 +17,9 @@ public class main {
 
 
         }catch (IOException e){
-            System.out.println("Control path-file");
+            System.out.println("Control: Path-file");
+            System.out.println("Simulator");
+            System.out.println("Program arguments");
             exit(-1);
         }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Control the argument of the program");
