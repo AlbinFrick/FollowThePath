@@ -66,7 +66,7 @@ public class FollowPathRobot2 {
     }
 
     public void rotateRobot(int i, Position robotsPosition, DifferentialDriveRequest dr, LocalizationResponse lr, Position[] path)throws Exception{
-        double bearingPoint = robotsPosition.getBearingTo(path[i]);
+        /*double bearingPoint = robotsPosition.getBearingTo(path[i]);
         System.out.println(lr.getHeadingAngle()- bearingPoint);
 
         if ((bearingPoint + Math.PI) > (lr.getHeadingAngle() + Math.PI)){
@@ -86,7 +86,7 @@ public class FollowPathRobot2 {
             }
         }
 
-        /*if (lr.getHeadingAngle()-bearingPoint > 0){
+        if (lr.getHeadingAngle()-bearingPoint > 0){
             TurnRight(lr,dr,bearingPoint);
 
         }
