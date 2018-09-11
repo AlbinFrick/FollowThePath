@@ -69,42 +69,6 @@ public class FollowPathRobot3 {
             dr.setAngularSpeed(0);
             robotcomm.putRequest(dr);
         }
-       /* if (lr.getHeadingAngle() > bearingPoint){
-            if((lr.getHeadingAngle()-Math.PI) > bearingPoint){
-                while (Math.abs(lr.getHeadingAngle()-bearingPoint) > angleprecision){
-                    dr.setAngularSpeed(turnspeed);
-                    robotcomm.putRequest(dr);
-                    robotcomm.getResponse(lr);
-                }
-            }
-            else {
-                while (Math.abs(lr.getHeadingAngle() - bearingPoint) > angleprecision) {
-                    dr.setAngularSpeed(-turnspeed);
-                    robotcomm.putRequest(dr);
-                    robotcomm.getResponse(lr);
-                }
-            }
-            dr.setAngularSpeed(0);
-            robotcomm.putRequest(dr);
-        }
-        else {
-            if((lr.getHeadingAngle()+Math.PI) < bearingPoint){
-                while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
-                    dr.setAngularSpeed(-turnspeed);
-                    robotcomm.putRequest(dr);
-                    robotcomm.getResponse(lr);
-                }
-            }
-            else{
-                while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
-                    dr.setAngularSpeed(turnspeed);
-                    robotcomm.putRequest(dr);
-                    robotcomm.getResponse(lr);
-                }
-            }
-            dr.setAngularSpeed(0);
-            robotcomm.putRequest(dr);
-        }*/
     }
 
     /**
@@ -114,7 +78,7 @@ public class FollowPathRobot3 {
      * @throws Exception
      */
     private void Turn(Boolean turn) throws Exception {
-        double turnspeed = 1.7;
+        double turnspeed = 1.5;
         double angleprecision = 0.18;
         if (turn){
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
@@ -136,7 +100,7 @@ public class FollowPathRobot3 {
     private void driveRobot(Position driveToPoint) throws Exception{
         robotcomm.getResponse(lr);
         double lookAheadDistance = 1;
-        double robotSpeed = 2.2;
+        double robotSpeed = 2;
         while (Math.abs(robotPos.getDistanceTo(driveToPoint)) > lookAheadDistance){
             dr.setLinearSpeed(robotSpeed);
             robotcomm.putRequest(dr);
