@@ -114,8 +114,8 @@ public class FollowPathRobot3 {
      * @throws Exception
      */
     private void Turn(Boolean turn) throws Exception {
-        double turnspeed = 1;
-        double angleprecision = 0.23;
+        double turnspeed = 1.7;
+        double angleprecision = 0.18;
         if (turn){
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
                 dr.setAngularSpeed(-turnspeed);
@@ -143,7 +143,7 @@ public class FollowPathRobot3 {
             robotcomm.getResponse(lr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
         }
-        dr.setLinearSpeed(0.57);
+        dr.setLinearSpeed(1.5);
         robotcomm.putRequest(dr);
 
     }
