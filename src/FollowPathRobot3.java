@@ -32,8 +32,8 @@ public class FollowPathRobot3 {
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
             if(Math.abs(robotPos.getDistanceTo(path[i])) > 0.8){
                 System.out.println("Vi är på steg: " + i + " av " + pathSize);
-                rotateRobot(path[i]);
-                driveRobot(path[i]);
+                RotateRobot(path[i]);
+                DriveRobot(path[i]);
             }
 
         }
@@ -44,11 +44,9 @@ public class FollowPathRobot3 {
         System.out.println("Klar. Tid: " + ((stopTime-startTime)/10000000));
     }
 
-    private void rotateRobot(Position rotateToPoint) throws Exception {
+    private void RotateRobot(Position rotateToPoint) throws Exception {
         robotcomm.getResponse(lr);
         bearingPoint = robotPos.getBearingTo(rotateToPoint);
-        //double angleprecision = 0.3;
-        //double turnspeed = 1.5;
         if (lr.getHeadingAngle() > bearingPoint){
             if((lr.getHeadingAngle()-Math.PI) > bearingPoint){
                 Turn(false);
@@ -97,7 +95,7 @@ public class FollowPathRobot3 {
 
     }
 
-    private void driveRobot(Position driveToPoint) throws Exception{
+    private void DriveRobot(Position driveToPoint) throws Exception{
         robotcomm.getResponse(lr);
         double lookAheadDistance = 1;
         double robotSpeed = 2;
@@ -112,4 +110,8 @@ public class FollowPathRobot3 {
 
     }
 
+    private void DangerAlert() throws Exception {
+        LaserEchoesResponse ler = new LaserEchoesResponse();
+        ler.getEchoes();
+    }
 }
