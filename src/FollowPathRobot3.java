@@ -6,7 +6,15 @@ public class FollowPathRobot3 {
     private DifferentialDriveRequest dr;
     private LocalizationResponse lr;
     private Position[] path;
-    double bearingPoint;
+    private double bearingPoint;
+
+
+    //parameters
+    private double turnspeed = 1.5;
+    private double angleprecision = 0.18;
+    private double lookAheadDistance;
+    private double robotSpeed;
+    private double driftSpeed;
     /**
      * Create a robot connected to host "host" at port "port"
      * @param host normally http://127.0.0.1
@@ -29,9 +37,20 @@ public class FollowPathRobot3 {
 
         long startTime = System.nanoTime();
         for (int i = 0; i < pathSize; i++) {
+            if (CloseToObject()){
+                driftSpeed = 0.7;
+                robotSpeed = 0.8;
+                lookAheadDistance = 0.3;
+            }
+            else{
+                driftSpeed = 2;
+                robotSpeed = 5;
+                lookAheadDistance = 1;
+            }
+            robotcomm.putRequest(dr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
-            if(Math.abs(robotPos.getDistanceTo(path[i])) > 0.8){
-                System.out.println("Vi är på steg: " + i + " av " + pathSize);
+            if(Math.abs(robotPos.getDistanceTo(path[i])) > (lookAheadDistance-0.2)){
+              //  System.out.println("Vi är på steg: " + i + " av " + pathSize);
                 RotateRobot(path[i]);
                 DriveRobot(path[i]);
             }
@@ -76,8 +95,7 @@ public class FollowPathRobot3 {
      * @throws Exception
      */
     private void Turn(Boolean turn) throws Exception {
-        double turnspeed = 1.5;
-        double angleprecision = 0.18;
+
         if (turn){
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
                 dr.setAngularSpeed(-turnspeed);
@@ -97,21 +115,35 @@ public class FollowPathRobot3 {
 
     private void DriveRobot(Position driveToPoint) throws Exception{
         robotcomm.getResponse(lr);
-        double lookAheadDistance = 1;
-        double robotSpeed = 2;
         while (Math.abs(robotPos.getDistanceTo(driveToPoint)) > lookAheadDistance){
             dr.setLinearSpeed(robotSpeed);
             robotcomm.putRequest(dr);
             robotcomm.getResponse(lr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
         }
-        dr.setLinearSpeed(1.5);
+        dr.setLinearSpeed(driftSpeed);
         robotcomm.putRequest(dr);
 
     }
 
-    private void DangerAlert() throws Exception {
+    private Boolean CloseToObject() throws Exception {
         LaserEchoesResponse ler = new LaserEchoesResponse();
-        ler.getEchoes();
+        robotcomm.getResponse(ler);
+        double[] echos = ler.getEchoes();
+        for (int i = 0; i < echos.length; i++){
+            if(echos[i]< 0.4){
+                return true;
+            }
+        }
+        return false;
     }
 }
+
+/*Jonathans älskebarn
+//om roboten skulle köra in i något
+            if ((distansToPoint+0.3) > Math.abs(robotPos.getDistanceTo(driveToPoint))){
+                dr.setLinearSpeed(0);
+                robotcomm.putRequest(dr);
+                return;
+            }
+ */
