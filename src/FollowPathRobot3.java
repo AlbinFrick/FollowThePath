@@ -38,8 +38,8 @@ public class FollowPathRobot3 {
         long startTime = System.nanoTime();
         for (int i = 0; i < pathSize; i++) {
             if (CloseToObject()){
-                driftSpeed = 0.7;
-                robotSpeed = 0.8;
+                driftSpeed = 0.4;
+                robotSpeed = 0.6;
                 lookAheadDistance = 0.3;
             }
             else{
@@ -120,6 +120,7 @@ public class FollowPathRobot3 {
             robotcomm.putRequest(dr);
             robotcomm.getResponse(lr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
+
         }
         dr.setLinearSpeed(driftSpeed);
         robotcomm.putRequest(dr);
@@ -144,6 +145,6 @@ public class FollowPathRobot3 {
             if ((distansToPoint+0.3) > Math.abs(robotPos.getDistanceTo(driveToPoint))){
                 dr.setLinearSpeed(0);
                 robotcomm.putRequest(dr);
-                return;
+                return;dS
             }
  */
