@@ -1,5 +1,7 @@
-import javafx.geometry.Pos;
-
+/**
+ * Class: FollowPathRobot3
+ * Description: This class creates a robot to
+ */
 public class FollowPathRobot3 {
     private RobotCommunication robotcomm;  // communication drivers
     private Position robotPos;
@@ -25,7 +27,14 @@ public class FollowPathRobot3 {
         robotcomm = new RobotCommunication(host, port);
     }
 
-    public void run(Position[] path, int pathSize) throws Exception {
+    /**
+     * Method: Run
+     * Description: This method uses all the method in the Class and makes
+     * the robot follow the given path.
+     * @param path - Position[]
+     * @throws Exception
+     */
+    public void run(Position[] path) throws Exception {
         this.path = path;
         System.out.println("Creating response");
         lr = new LocalizationResponse();
@@ -36,7 +45,7 @@ public class FollowPathRobot3 {
         robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
 
         long startTime = System.nanoTime();
-        for (int i = 0; i < pathSize; i++) {
+        for (int i = 0; i < path.length; i++) {
             if (CloseToObject()){
                 driftSpeed = 0.4;
                 robotSpeed = 0.6;
@@ -50,7 +59,7 @@ public class FollowPathRobot3 {
             robotcomm.putRequest(dr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
             if(Math.abs(robotPos.getDistanceTo(path[i])) > (lookAheadDistance-0.2)){
-              //  System.out.println("Vi är på steg: " + i + " av " + pathSize);
+                System.out.println("Vi är på steg: " + i + " av " + path.length);
                 RotateRobot(path[i]);
                 DriveRobot(path[i]);
             }
@@ -63,6 +72,13 @@ public class FollowPathRobot3 {
         System.out.println("Klar. Tid: " + ((stopTime-startTime)/10000000));
     }
 
+    /**
+     * Method: RotateRobot
+     * Description: This is a void method that decides to turn right or left
+     * towards a given position.
+     * @param rotateToPoint - position.
+     * @throws Exception
+     */
     private void RotateRobot(Position rotateToPoint) throws Exception {
         robotcomm.getResponse(lr);
         bearingPoint = robotPos.getBearingTo(rotateToPoint);
@@ -89,13 +105,17 @@ public class FollowPathRobot3 {
     }
 
     /**
-     * turn = true höger
-     * turn = false vänster
+     * Method: Turn
+     * Description: This is a void method that turns the robot
+     * left or right dependent on the input parameter.
+     * The robot will rotate until it's pointing roughly at the next point.
+     * How precis the robot will be pointed is dependent on the angleprecision.
+     * true = right
+     * false = left
      * @param turn
      * @throws Exception
      */
     private void Turn(Boolean turn) throws Exception {
-
         if (turn){
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
                 dr.setAngularSpeed(-turnspeed);
@@ -113,6 +133,14 @@ public class FollowPathRobot3 {
 
     }
 
+    /**
+     * Method: DriveRobot
+     * Description: This is a void method that takes in an parameter
+     * of a position and drives the robot forward until the distance
+     * to the given position is less then the lookAheadDistance.
+     * @param driveToPoint - position
+     * @throws Exception
+     */
     private void DriveRobot(Position driveToPoint) throws Exception{
         robotcomm.getResponse(lr);
         while (Math.abs(robotPos.getDistanceTo(driveToPoint)) > lookAheadDistance){
@@ -127,6 +155,13 @@ public class FollowPathRobot3 {
 
     }
 
+    /**
+     * Method: CloseTObject
+     * Description: This is a boolean method that
+     * determines if there is an object close to the robot.
+     * @return - boolean
+     * @throws Exception
+     */
     private Boolean CloseToObject() throws Exception {
         LaserEchoesResponse ler = new LaserEchoesResponse();
         robotcomm.getResponse(ler);

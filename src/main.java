@@ -7,13 +7,11 @@ public class main {
     public static void main(String[] args)  {
         try{
             ReadPath readPath = new ReadPath(args[0]);
-
-            int pathsize = readPath.pathSize();
             Position[] path = readPath.getPath();
             System.out.println("position " + path[0].getX() + "," + path[0].getY());
             System.out.println("Creating Robot");
             FollowPathRobot3 robot = new FollowPathRobot3("http://127.0.0.1", 50000);
-            robot.run(path, pathsize);
+            robot.run(path);
 
 
         }catch (IOException e){
