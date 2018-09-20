@@ -17,7 +17,7 @@ public class ReadPath
    private int nPoints;
 
    @SuppressWarnings("unchecked")
-   public ReadPath(String fileName) throws JsonParseException, JsonMappingException, IOException
+   public ReadPath(String fileName) throws IOException
    {
       File pathFile = new File(fileName);
 
@@ -45,7 +45,8 @@ public class ReadPath
          double z = (Double)aPosition.get("X");
          path[index] = new Position(z, x);
          index++;
-         System.out.println("x = " + x + ", z = " + (z+5));
+         //made to easier pinpoint the position in the simulation.
+         //System.out.println("x = " + x + ", z = " + (z+5));
          //System.out.println(index);
       }
       

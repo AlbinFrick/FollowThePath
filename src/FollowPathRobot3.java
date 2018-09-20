@@ -1,15 +1,18 @@
 /**
  * Class: FollowPathRobot3
- * Description: This class creates a robot to
+ * Description: This class creates a robot that can follow
+ * a given path that consist of and array of positions.
+ *
+ * @author AlbinF 20/9-18
+ * @author JonathanH 20/9-18
  */
+
 public class FollowPathRobot3 {
     private RobotCommunication robotcomm;  // communication drivers
     private Position robotPos;
     private DifferentialDriveRequest dr;
     private LocalizationResponse lr;
-    private Position[] path;
     private double bearingPoint;
-
 
     //parameters
     private double turnspeed = 1.5;
@@ -17,8 +20,11 @@ public class FollowPathRobot3 {
     private double lookAheadDistance;
     private double robotSpeed;
     private double driftSpeed;
+
+
     /**
-     * Create a robot connected to host "host" at port "port"
+     * Constructor: FollowPathRobot3
+     * Description: Create a robot connected to host "host" at port "port"
      * @param host normally http://127.0.0.1
      * @param port normally 50000
      */
@@ -34,8 +40,7 @@ public class FollowPathRobot3 {
      * @param path - Position[]
      * @throws Exception
      */
-    public void run(Position[] path) throws Exception {
-        this.path = path;
+    public void Run(Position[] path) throws Exception {
         System.out.println("Creating response");
         lr = new LocalizationResponse();
 
@@ -59,7 +64,8 @@ public class FollowPathRobot3 {
             robotcomm.putRequest(dr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
             if(Math.abs(robotPos.getDistanceTo(path[i])) > (lookAheadDistance-0.2)){
-                System.out.println("Vi är på steg: " + i + " av " + path.length);
+                //Visar vilka steg roboten väljer att köra mot
+                //System.out.println("Steg: " + i + " av " + path.length);
                 RotateRobot(path[i]);
                 DriveRobot(path[i]);
             }
@@ -69,13 +75,13 @@ public class FollowPathRobot3 {
         dr.setLinearSpeed(0);
         robotcomm.putRequest(dr);
 
-        System.out.println("Klar. Tid: " + ((stopTime-startTime)/10000000));
+        System.out.println("Klar. Tid: " + ((stopTime-startTime)/1000000000) + " sekunder");
     }
 
     /**
      * Method: RotateRobot
-     * Description: This is a void method that decides to turn right or left
-     * towards a given position.
+     * Description: This is a void method that decides if to turn right or
+     * left depending of the next position to go to.
      * @param rotateToPoint - position.
      * @throws Exception
      */
@@ -89,8 +95,6 @@ public class FollowPathRobot3 {
             else {
                 Turn(true);
             }
-            dr.setAngularSpeed(0);
-            robotcomm.putRequest(dr);
         }
         else {
             if((lr.getHeadingAngle()+Math.PI) < bearingPoint){
@@ -99,8 +103,6 @@ public class FollowPathRobot3 {
             else{
                 Turn(false);
             }
-            dr.setAngularSpeed(0);
-            robotcomm.putRequest(dr);
         }
     }
 
@@ -122,6 +124,8 @@ public class FollowPathRobot3 {
                 robotcomm.putRequest(dr);
                 robotcomm.getResponse(lr);
             }
+            dr.setAngularSpeed(0);
+            robotcomm.putRequest(dr);
         }
         else{
             while (Math.abs(bearingPoint-lr.getHeadingAngle()) > angleprecision){
@@ -129,6 +133,8 @@ public class FollowPathRobot3 {
                 robotcomm.putRequest(dr);
                 robotcomm.getResponse(lr);
             }
+            dr.setAngularSpeed(0);
+            robotcomm.putRequest(dr);
         }
 
     }
@@ -148,11 +154,9 @@ public class FollowPathRobot3 {
             robotcomm.putRequest(dr);
             robotcomm.getResponse(lr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
-
         }
         dr.setLinearSpeed(driftSpeed);
         robotcomm.putRequest(dr);
-
     }
 
     /**
