@@ -178,12 +178,3 @@ public class FollowPathRobot3 {
         return false;
     }
 }
-
-/*Jonathans älskebarn
-//om roboten skulle köra in i något
-            if ((distansToPoint+0.3) > Math.abs(robotPos.getDistanceTo(driveToPoint))){
-                dr.setLinearSpeed(0);
-                robotcomm.putRequest(dr);
-                return;dS
-            }
- */
