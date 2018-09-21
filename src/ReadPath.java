@@ -1,9 +1,6 @@
 import java.io.*;
 import java.util.Collection;
 import java.util.Map;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -54,11 +51,12 @@ public class ReadPath
 
    }
 
-   public Position[] getPath(){
+   /**
+    * Method: GetPath
+    * Description: Returns the paths as a position array.
+    * @return - Position[]
+    */
+   public Position[] GetPath(){
       return path;
    }
-
-   public int pathSize(){return nPoints; }
-
-
 }

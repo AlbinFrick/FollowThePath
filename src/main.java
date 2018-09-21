@@ -18,7 +18,7 @@ public class main {
         try{
             System.out.println("Reading path");
             ReadPath readPath = new ReadPath(args[0]);
-            Position[] path = readPath.getPath();
+            Position[] path = readPath.GetPath();
             System.out.println("Creating Robot");
             FollowPathRobot3 robot = new FollowPathRobot3("http://127.0.0.1", 50000);
             robot.Run(path);
@@ -37,6 +37,5 @@ public class main {
             e.printStackTrace();
             exit(-1);
         }
-
     }
 }

@@ -1,10 +1,3 @@
-import javafx.geometry.Pos;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-
 public class FollowPathRobot {
 
     private RobotCommunication robotcomm;  // communication drivers
@@ -22,8 +15,8 @@ public class FollowPathRobot {
     public static void main(String[] args) throws Exception {
        ReadPath readPath = new ReadPath(args[0]);
 
-       int pathsize = readPath.pathSize();
-       Position[] path = readPath.getPath();
+       int pathsize = readPath.PathSize();
+       Position[] path = readPath.GetPath();
         System.out.println("position " + path[0].getX() + "," + path[0].getY());
        System.out.println("Creating Robot");
        FollowPathRobot robot = new FollowPathRobot("http://127.0.0.1", 50000);

@@ -1,7 +1,3 @@
-import javafx.geometry.Pos;
-
-import java.rmi.MarshalException;
-
 public class FollowPathRobot2 {
     private RobotCommunication robotcomm;  // communication drivers
     /**
@@ -18,8 +14,8 @@ public class FollowPathRobot2 {
     public static void main(String[] args) throws Exception {
         ReadPath readPath = new ReadPath(args[0]);
 
-        int pathsize = readPath.pathSize();
-        Position[] path = readPath.getPath();
+        int pathsize = readPath.PathSize();
+        Position[] path = readPath.GetPath();
         System.out.println("position " + path[0].getX() + "," + path[0].getY());
         System.out.println("Creating Robot");
         FollowPathRobot2 robot = new FollowPathRobot2("http://127.0.0.1", 50000);
