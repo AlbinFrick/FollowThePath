@@ -15,7 +15,7 @@ public class FollowPathRobot {
     public static void main(String[] args) throws Exception {
        ReadPath readPath = new ReadPath(args[0]);
 
-       int pathsize = readPath.PathSize();
+       //int pathsize = readPath.PathSize();
        Position[] path = readPath.GetPath();
         System.out.println("position " + path[0].getX() + "," + path[0].getY());
        System.out.println("Creating Robot");

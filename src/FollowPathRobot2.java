@@ -14,12 +14,12 @@ public class FollowPathRobot2 {
     public static void main(String[] args) throws Exception {
         ReadPath readPath = new ReadPath(args[0]);
 
-        int pathsize = readPath.PathSize();
+        //int pathsize = readPath.PathSize();
         Position[] path = readPath.GetPath();
         System.out.println("position " + path[0].getX() + "," + path[0].getY());
         System.out.println("Creating Robot");
         FollowPathRobot2 robot = new FollowPathRobot2("http://127.0.0.1", 50000);
-        robot.run(path, pathsize);
+       // robot.run(path, pathsize);
     }
 
     public void run(Position[] path, int pathSize) throws Exception{

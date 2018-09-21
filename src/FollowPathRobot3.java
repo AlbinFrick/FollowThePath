@@ -54,16 +54,16 @@ public class FollowPathRobot3 {
             if (CloseToObject()){
                 driftSpeed = 0.4;
                 robotSpeed = 0.6;
-                lookAheadDistance = 0.3;
+                lookAheadDistance = 0.1;
             }
             else{
-                driftSpeed = 2;
+                driftSpeed = 3;
                 robotSpeed = 5;
-                lookAheadDistance = 1;
+                lookAheadDistance = 0.8;
             }
             robotcomm.putRequest(dr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
-            if(Math.abs(robotPos.getDistanceTo(path[i])) > (lookAheadDistance-0.2)){
+            if(Math.abs(robotPos.getDistanceTo(path[i])) > lookAheadDistance){
                 //Visar vilka steg roboten väljer att köra mot
                 //System.out.println("Steg: " + i + " av " + path.length);
                 RotateRobot(path[i]);
@@ -170,7 +170,7 @@ public class FollowPathRobot3 {
         LaserEchoesResponse ler = new LaserEchoesResponse();
         robotcomm.getResponse(ler);
         double[] echos = ler.getEchoes();
-        for (int i = 0; i < echos.length; i++){
+        for (int i = 90; i < 181; i++){
             if(echos[i]< 0.4){
                 return true;
             }
