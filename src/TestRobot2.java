@@ -19,7 +19,7 @@ public class TestRobot2
    }
 
    /**
-    * This simple main program creates a robot, sets up some speed and turning rate and
+    * This simple Main program creates a robot, sets up some speed and turning rate and
     * then displays angle and position for 16 seconds.
     * @param args         not used
     * @throws Exception   not caught

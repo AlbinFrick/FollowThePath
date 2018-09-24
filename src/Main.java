@@ -1,6 +1,6 @@
 
 /**
- * Class: main
+ * Class: Main
  * Description: This is class reads a path greats a FollowPathRobot3
  * and then runs the robot.
  *
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static java.lang.System.exit;
 
-public class main {
+public class Main {
 
     public static void main(String[] args)  {
         try{
