@@ -64,8 +64,6 @@ public class FollowPathRobot3 {
             robotcomm.putRequest(dr);
             robotPos = new Position(lr.getPosition()[0], lr.getPosition()[1]);
             if(Math.abs(robotPos.getDistanceTo(path[i])) > lookAheadDistance){
-                //Visar vilka steg roboten väljer att köra mot
-                //System.out.println("Steg: " + i + " av " + path.length);
                 RotateRobot(path[i]);
                 DriveRobot(path[i]);
             }
@@ -171,7 +169,7 @@ public class FollowPathRobot3 {
         robotcomm.getResponse(ler);
         double[] echos = ler.getEchoes();
         for (int i = 90; i < 181; i++){
-            if(echos[i]< 0.4){
+            if(echos[i]< 0.45){
                 return true;
             }
         }

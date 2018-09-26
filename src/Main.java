@@ -1,7 +1,7 @@
 
 /**
  * Class: Main
- * Description: This is class reads a path greats a FollowPathRobot3
+ * Description: This is class reads a path creates a FollowPathRobot3
  * and then runs the robot.
  *
  *  * @author AlbinF 20/9-18
